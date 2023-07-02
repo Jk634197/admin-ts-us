@@ -24,7 +24,7 @@ function PageHeader({open,handleClose,id,handleClickOpen}) {
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleClickOpen}
+          onClick={e => { handleClickOpen("","","") }}
         >
           Create Project
         </Button>

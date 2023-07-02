@@ -10,7 +10,8 @@ import { useState } from 'react';
 export default function OrderFormDialog({ open, handleClickOpen,id, handleClose ,title,description}) {
  
     const [titleField, setTitleField] = useState(title)
-    const [descriptionField,setDescriptionField]=useState(description)
+  const [descriptionField, setDescriptionField] = useState(description)
+  console.log(title+" "+id+" "+description)
   return (
     <div>
       <Dialog open={open} onClose={(e) => { handleClose(id,titleField,descriptionField) }}>
@@ -22,7 +23,8 @@ export default function OrderFormDialog({ open, handleClickOpen,id, handleClose 
                       id="outlined-search"
                       label="Project Title"
                       type="search"
-                      defaultValue={titleField}
+            defaultValue={title}
+            
             fullWidth
                onChange={(e) => setTitleField(e.target.value)}
                     />
@@ -34,12 +36,12 @@ export default function OrderFormDialog({ open, handleClickOpen,id, handleClose 
             multiline
              onChange={(e) => setDescriptionField(e.target.value)}
                       rows={4}
-                      defaultValue={descriptionField}
+                      defaultValue={description}
                       fullWidth
         />                  
         </DialogContent>
         <DialogActions>
-          <Button onClick={(e) => { handleClose(id,titleField,descriptionField) }}>Cancel</Button>
+          <Button onClick={(e) => { handleClose("notaction",titleField,descriptionField) }}>Cancel</Button>
           <Button onClick={(e) => { handleClose(id,titleField,descriptionField) }}>Subscribe</Button>
         </DialogActions>
       </Dialog>

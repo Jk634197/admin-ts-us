@@ -85,7 +85,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleClose ,title,description}) => {
+const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleClose ,id,title,description}) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -95,7 +95,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
-
+  console.log(id+" "+description+" "+title)
   const statusOptions = [
     {
       id: 'all',
@@ -282,7 +282,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                       noWrap
                     >
                       {/* {cryptoOrder.sourceName} */}
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {cryptoOrder.orderDate}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {cryptoOrder.sourceDesc}
@@ -319,7 +319,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                         }}
                         color="inherit"
                         size="small"
-                        onClick={(e) => { handleClickOpen() }}
+                        onClick={(e) => { handleClickOpen(cryptoOrder.id,cryptoOrder.orderDetails,cryptoOrder.orderID) }}
                       >
                         <EditTwoToneIcon fontSize="small" />
                       </IconButton>
@@ -354,7 +354,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-        <OrderFormDialog open={open} handleClose={handleClose} handleClickOpen={handleClickOpen} title={title} description={description} />
+        <OrderFormDialog open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
                     
     </Card>
   );

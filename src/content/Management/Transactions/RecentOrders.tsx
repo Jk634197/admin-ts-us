@@ -5,38 +5,9 @@ import { subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useAuthTokens from '@/utils/useAuthTokens';
 
-function RecentOrders({ open, handleClickOpen, handleClose, id, title, description }) {
-  const [cryptoOrders,setCryptoOrders] = useState();
+function RecentOrders({ open, handleClickOpen,cryptoOrders, handleClose, id, title, description }) {
   const [token, setToken] = useState("");
-  useEffect(async () => {
-    setToken(localStorage.getItem('token'))
-    console.log()
-// console.log(accessToken)
-     const headers = {
-  "Authorization": `Bearer ${localStorage.getItem('token')}`,
-};
 
-     const response = await fetch("http://68.178.202.181:8000/api/v1/project/project/", { headers }).then((response) => {
-                // Check if the request was successful
-                if (response.ok) {
-
-                    return response.json();
-
-                } else {
-                }
-            })
-            .then((data) => {
-                // Do something with the data
-              console.log(data);
-
-            })
-            .catch((error) => {
-                // Handle the error
-                console.error(error);
-            });
-
-     console.log(response)
-   }, [])
   // [
   //   {
   //     id: '1',
