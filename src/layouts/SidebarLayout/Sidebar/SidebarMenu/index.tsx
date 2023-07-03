@@ -278,10 +278,10 @@ function SidebarMenu() {
           <SubMenuWrapper>
             <List component="div">
               <ListItem component="div">
-                <NextLink href="/management/project" passHref>
+                <NextLink href="/customer/cbe17d10-4a82-40fc-866a-597b7f4d474c" passHref>
                   <Button
                     className={
-                      currentRoute === '/management/project'
+                      currentRoute === '/customer/cbe17d10-4a82-40fc-866a-597b7f4d474c'
                         ? 'active'
                         : ''
                     }

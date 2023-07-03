@@ -50,9 +50,7 @@ function Overview() {
   useEffect(async () => {
     console.log(localStorage.getItem('token'))
     if (localStorage.getItem('token') != undefined) {
-      router.push("/management/transactions", {
-      replace: true,
-                             });
+      await refreshToken();
     }
     
    }, [])
@@ -95,7 +93,7 @@ function Overview() {
                 // Do something with the data
               console.log(data);
                              router.push("/management/transactions", {
-      replace: true,
+                            replace: true,
                              });
               localStorage.setItem("token", data.access);
 localStorage.setItem("refresh", data.refresh);
@@ -103,6 +101,59 @@ localStorage.setItem("refresh", data.refresh);
 
             })
             .catch((error) => {
+                // Handle the error
+                console.error(error);
+            });
+
+    }
+  const refreshToken = async () => {
+        
+        // The URL to post to
+        const url = "http://68.178.202.181:8000/api/v1/account/token/refresh/";
+
+      const headers = {
+             "Content-Type": "application/json"
+};
+        // The options for the fetch request
+        const options = {
+            method: "POST", // The HTTP method to use
+            headers:headers,
+            // The body of the request as a JSON string
+            body: JSON.stringify({refresh:localStorage.getItem('refresh')}),
+        };
+
+        // Call the fetch function and handle the response
+        fetch(url, options)
+            .then((response) => {
+                // Check if the request was successful
+                if (response.ok) {
+                    // Parse the response body as JSON
+                  alert("login successful");
+                  
+                    return response.json();
+
+                } else {
+                    // Throw an error if the response was not ok
+                    // throw new Error("Something went wrong");
+                    // alert("invalid credentials");
+                }
+            })
+            .then((data) => {
+                // Do something with the data
+              console.log(data);
+              console.log("here")
+              localStorage.setItem("token", data.access);
+              if (data != undefined && data.access != undefined) {
+                console.log("here")
+                                             router.push("/management/transactions", {
+      replace: true,
+                             });
+                             }
+              saveTokens(data.access, data.refresh);
+
+            })
+          .catch((error) => {
+              
                 // Handle the error
                 console.error(error);
             });

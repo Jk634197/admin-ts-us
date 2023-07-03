@@ -205,7 +205,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
               </FormControl> */}
             </Box>
           }
-          title="Recent Projects"
+          title="customers"
         />
       )}
       <Divider />
@@ -229,7 +229,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody> 
             {paginatedCryptoOrders.map((cryptoOrder) => {
               const isCryptoOrderSelected = selectedCryptoOrders.includes(
                 cryptoOrder.id
@@ -359,7 +359,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-        <OrderFormDialog open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
+        <OrderFormDialog ssnIs={""} address1Is={""} address2Is={""} cityIs={""} stateIs={""} zipIs={""} date={""} open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
                     
     </Card>
   );

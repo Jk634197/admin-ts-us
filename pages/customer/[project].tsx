@@ -1,15 +1,17 @@
 import Head from 'next/head';
 import SidebarLayout from '@/layouts/SidebarLayout';
-import PageHeader from '@/content/Management/Transactions/PageHeader';
+import PageHeader from '@/content/Management/customers/PageHeader';
 import PageTitleWrapper from '@/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from '@/components/Footer';
 import * as moment from 'moment';
 import React, { useEffect, useState} from 'react';
-import RecentOrders from '@/content/Management/Transactions/RecentOrders';
+import RecentOrders from '@/content/Management/customers/RecentOrders';
 import { subDays } from 'date-fns';
 import { idText } from 'typescript';
-function ApplicationsTransactions() {
+import { useRouter } from 'next/router'
+function Customers() {
+  const router=useRouter()
   const [open, setOpen] = useState<boolean>(false);
   const [selectedData, setSelected] = useState<any>({id:"",title:"",description:""});
   const [cryptoOrders, setCryptoOrders] = useState([]);
@@ -18,7 +20,7 @@ function ApplicationsTransactions() {
   "Authorization": `Bearer ${localStorage.getItem('token')}`,
 };
 
-     const response = await fetch("http://68.178.202.181:8000/api/v1/project/project/", { headers }).then((response) => {
+     const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${router.query.project}/customers/`, { headers }).then((response) => {
                 // Check if the request was successful
                 if (response.ok) {
 
@@ -34,10 +36,10 @@ function ApplicationsTransactions() {
               data.map(e=>{
                 newData.push({
       id: e.id,
-      orderDetails: e.name,
-      orderDate: moment(e.created_date).format('DD/MM/YYYY HH:mm:ss'),
+      orderDetails: e.first_name,
+      orderDate: moment().format('DD/MM/YYYY HH:mm:ss'),
       status: 'completed',
-      orderID: e.description,
+      orderID: e.last_name,
       sourceName: 'Bank Account',
       sourceDesc: '*** 1111',
       amountCrypto: 34.4565,
@@ -57,6 +59,7 @@ function ApplicationsTransactions() {
   }
     useEffect(async () => {
 // console.log(accessToken)
+      console.log(router.query.project)
       getProjects()
    }, [])
   const handleClickOpen = (id,title,description) => {
@@ -91,8 +94,7 @@ const options = {
             .then((data) => {
                 // Do something with the data
               console.log(data);
-              getProjects()
-              
+getProjects()
             })
             .catch((error) => {
                 // Handle the error
@@ -167,8 +169,8 @@ const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/
   );
 }
 
-ApplicationsTransactions.getLayout = (page) => (
+Customers.getLayout = (page) => (
   <SidebarLayout>{page}</SidebarLayout>
 );
 
-export default ApplicationsTransactions;
+export default Customers;
