@@ -78,6 +78,7 @@ const applyFilters = (
 };
 
 import { useRouter } from "next/router";
+import moment from 'moment';
 const applyPagination = (
   cryptoOrders: CryptoOrder[],
   page: number,
@@ -86,7 +87,7 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleClose ,id,title,description}) => {
+const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleClose ,project,id,title,description,datePicker,ssn,address1,address2,city,state,zip}) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -176,7 +177,8 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
   const selectedAllCryptoOrders =
     selectedCryptoOrders.length === cryptoOrders.length;
   const theme = useTheme();
-
+  console.log(id)
+  console.log(project)
   return (
     <Card>
       {selectedBulkActions && (
@@ -221,8 +223,8 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
               <TableCell>Creation Time</TableCell>
               {/* <TableCell align="right">Amount</TableCell> */}
               <TableCell align="right">Status</TableCell>
@@ -239,9 +241,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                   hover
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
-                  onClick={e=>{             router.push(`/customer/${cryptoOrder.id}`, {
-      replace: true,
-                             });}}
+
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -345,6 +345,15 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                 </TableRow>
               );
             })}
+            {paginatedCryptoOrders.length==0&&(<TableRow ><TableCell colSpan={6} align="center"><Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      No any customers found
+                    </Typography></TableCell></TableRow>)}
           </TableBody>
         </Table>
       </TableContainer>
@@ -359,7 +368,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-        <OrderFormDialog ssnIs={""} address1Is={""} address2Is={""} cityIs={""} stateIs={""} zipIs={""} date={""} open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
+        <OrderFormDialog ssnIs={ssn} address1Is={address1} project={project} address2Is={address2} cityIs={city} stateIs={state} zipIs={zip} date={new Date()} open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
                     
     </Card>
   );

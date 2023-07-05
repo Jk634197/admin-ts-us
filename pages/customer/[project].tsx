@@ -8,10 +8,14 @@ import * as moment from 'moment';
 import React, { useEffect, useState} from 'react';
 import RecentOrders from '@/content/Management/customers/RecentOrders';
 import { subDays } from 'date-fns';
+
+import toast, { Toaster } from "react-hot-toast";
+
 import { idText } from 'typescript';
 import { useRouter } from 'next/router'
 function Customers() {
   const router=useRouter()
+  const project = router.query.project=="notSelected"?localStorage.getItem('last-project'):router.query.project;
   const [open, setOpen] = useState<boolean>(false);
   const [selectedData, setSelected] = useState<any>({id:"",title:"",description:""});
   const [cryptoOrders, setCryptoOrders] = useState([]);
@@ -19,8 +23,8 @@ function Customers() {
        const headers = {
   "Authorization": `Bearer ${localStorage.getItem('token')}`,
 };
-
-     const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${router.query.project}/customers/`, { headers }).then((response) => {
+  
+     const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${project}/customers/`, { headers }).then((response) => {
                 // Check if the request was successful
                 if (response.ok) {
 
@@ -68,11 +72,19 @@ function Customers() {
     setSelected({id:id,title:title,description:description})
   };
 
-  const handleClose = async (id, title, description) => {
+  const handleClose = async (id, title, description, datePicker, ssn, address1, address2, city, state, zip) => {
+    console.log(id + " " + title + " " + description + " " + datePicker + " " + ssn + " " + address1 + " " + address2 + " " + city + " " + state + " " + zip)
+    
     if (id != "notaction") {
       
-    if (id == undefined||id=="") {
-      const headers = {
+      if (id == undefined || id == "") {
+        console.log("here")
+        const toastCreate = toast.loading('creating new customer plese wait ..');
+        toast.dismiss()
+        toast.success('customer created ')
+        toast.error('customer cannot created Having issue ')
+        toast.dismiss(toastCreate);
+        const headers = {
              "Content-Type": "application/json",
   "Authorization": `Bearer ${localStorage.getItem('token')}`,
 };
@@ -80,15 +92,33 @@ const options = {
             method: "POST", // The HTTP method to use
             headers:headers,
             // The body of the request as a JSON string
-            body: JSON.stringify({name:title,description:description}),
-        };
-     const response = await fetch("http://68.178.202.181:8000/api/v1/project/", options).then((response) => {
+            body: JSON.stringify({
+    "first_name": title,
+    "last_name": description,
+    "ssn": ssn,
+    "address1": address1,
+    "address2": address2,
+    "city": city,
+    "state": state,
+    "country": "USA",
+    "zipcode": zip,
+    "birth_date":datePicker
+}),
+};
+        
+        const toastUpdate = toast.loading('updating existing customer plese wait ..');
+     const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${project}/customer/`, options).then((response) => {
                 // Check if the request was successful
-                if (response.ok) {
-                    alert("project added successfully")
+       if (response.ok) {
+                  // toast.dismiss(toastCreate)
+                 toast.dismiss()
+                    toast.success('customer created ')
                     return response.json();
 
                 } else {
+// toast.dismiss(toastCreate)
+                 toast.dismiss()
+                  toast.error('customer cannot created Having issue ')
                 }
             })
             .then((data) => {
@@ -99,6 +129,8 @@ getProjects()
             .catch((error) => {
                 // Handle the error
                 console.error(error);
+            }).finally(() => {
+              toast.dismiss()
             });
 
     }
@@ -112,18 +144,33 @@ getProjects()
   method: "PATCH", // The HTTP method to use
   headers: headers,
   // The body of the request as a JSON string
-  body: JSON.stringify({ name: title, description: description }),
+  body: JSON.stringify({
+    "first_name": title,
+    "last_name": description,
+    "ssn": ssn,
+    "address1": address1,
+    "address2": address2,
+    "city": city,
+    "state": state,
+    "country": "USA",
+    "zipcode": zip,
+    "birth_date":datePicker
+}),
 };
 
-const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${id}`, options)
+const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/${project}/customer/${id}`, options)
   .then((response) => {
     // Check if the request was successful
     if (response.ok) {
-      alert("Project updated successfully");
+      toast.dismiss()
+                    toast.success('customer updated ')
       return response.json();
     } else {
       // Handle the error
-      throw new Error("Request failed with status " + response.status);
+        toast.dismiss()
+                  toast.error('customer cannot created Having issue ')
+               
+      // throw new Error("Request failed with status " + response.status);
     }
   })
   .then((data) => {
@@ -134,7 +181,9 @@ const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/
   .catch((error) => {
     // Handle the error
     console.error(error);
-  });
+  }).finally(() => {
+              toast.dismiss()
+            });
 
     }
       
@@ -152,6 +201,9 @@ const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/
         <PageHeader open={open} handleClose={handleClose} id="" handleClickOpen={handleClickOpen} />
       </PageTitleWrapper>
       <Container maxWidth="lg">
+        <Toaster 
+  position="top-center"
+  reverseOrder={false} />
         <Grid
           container
           direction="row"
@@ -160,10 +212,12 @@ const response = await fetch(`http://68.178.202.181:8000/api/v1/project/project/
           spacing={3}
         >
           <Grid item xs={12}>
-            <RecentOrders cryptoOrders={cryptoOrders} open={open} handleClose={handleClose} handleClickOpen={handleClickOpen} title={selectedData.title} description={selectedData.description} id={selectedData.id} />
+            <RecentOrders project={project} cryptoOrders={cryptoOrders} open={open} handleClose={handleClose} handleClickOpen={handleClickOpen} title={selectedData.title} description={selectedData.description} id={selectedData.id} />
           </Grid>
         </Grid>
+        
       </Container>
+       
       <Footer />
     </>
   );

@@ -1,6 +1,9 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
+import Link from 'next/link'
+ 
+
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -178,6 +181,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
   const theme = useTheme();
 
   return (
+    <>
     <Card>
       {selectedBulkActions && (
         <Box flex={1} p={2}>
@@ -235,13 +239,14 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                 cryptoOrder.id
               );
               return (
+                <>
                 <TableRow
                   hover
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
-                  onClick={e=>{             router.push(`/customer/${cryptoOrder.id}`, {
-      replace: true,
-                             });}}
+      //             onClick={e=>{             router.push(`/customer/${cryptoOrder.id}`, {
+      // replace: true,
+      //                        });}}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -254,6 +259,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                     />
                   </TableCell>
                   <TableCell>
+                     <Link href={`/customer/${cryptoOrder.id}`}>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -263,6 +269,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                     >
                       {cryptoOrder.orderDetails}
                     </Typography>
+                    </Link>
                     {/* <Typography variant="body2" color="text.secondary" noWrap>
                       {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
                     </Typography> */}
@@ -342,9 +349,19 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
                       </IconButton>
                     </Tooltip> */}
                   </TableCell>
-                </TableRow>
+                  </TableRow>
+                  </>
               );
             })}
+              {paginatedCryptoOrders.length==0&&(<TableRow ><TableCell colSpan={6} align="center"><Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      No any Project found
+                    </Typography></TableCell></TableRow>)}
           </TableBody>
         </Table>
       </TableContainer>
@@ -362,6 +379,7 @@ const RecentOrdersTable: FC<any> = ({ cryptoOrders,open,handleClickOpen,handleCl
         <OrderFormDialog open={open} handleClose={handleClose} id={id} handleClickOpen={handleClickOpen} title={title} description={description} />
                     
     </Card>
+    </>
   );
 };
 

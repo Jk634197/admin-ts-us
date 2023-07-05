@@ -5,9 +5,10 @@ import { subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useAuthTokens from '@/utils/useAuthTokens';
 
-function RecentOrders({ open, handleClickOpen,cryptoOrders, handleClose, id, title, description }) {
+function RecentOrders({ open, handleClickOpen,cryptoOrders, handleClose,project, id, title, description,datePicker,ssn,address1,address2,city,state,zip }) {
   const [token, setToken] = useState("");
-
+  console.log(id)
+  console.log(project)
   // [
   //   {
   //     id: '1',
@@ -143,7 +144,7 @@ function RecentOrders({ open, handleClickOpen,cryptoOrders, handleClose, id, tit
   
   return (
     <Card>
-      <RecentOrdersTable cryptoOrders={cryptoOrders} open={open} id={id} handleClose={handleClose} handleClickOpen={handleClickOpen} title={title} description={description}/>
+      <RecentOrdersTable cryptoOrders={cryptoOrders} project={project} open={open} id={id} handleClose={handleClose} handleClickOpen={handleClickOpen} title={title} description={description} datePicker={datePicker} ssn={ssn} address1={address1} address2={address2} city={city} state={state} zip={zip} />
     </Card>
   );
 }

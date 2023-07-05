@@ -29,7 +29,7 @@ function PageHeader({open,handleClose,id,handleClickOpen}) {
         >
           Create Customer
         </Button>
-        <OrderFormDialog open={open} id={id} ssnIs={""} address1Is={""} address2Is={""} cityIs={""} stateIs={""} zipIs={""} date={moment()} handleClose={handleClose} handleClickOpen={handleClickOpen} title={"Project Title"} description={"Project Description"} />
+        <OrderFormDialog open={open} id={id} ssnIs={""} project={""} address1Is={""} address2Is={""} cityIs={""} stateIs={""} zipIs={""} date={new Date()} handleClose={handleClose} handleClickOpen={handleClickOpen} title={"Project Title"} description={"Project Description"} />
       </Grid>
     </Grid>
   );

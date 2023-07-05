@@ -31,6 +31,9 @@ function ApplicationsTransactions() {
                 // Do something with the data
               console.log(data);
               let newData=[]
+              if (data.length > 0) {
+                localStorage.setItem('last-project',data[0].id)
+              }
               data.map(e=>{
                 newData.push({
       id: e.id,
